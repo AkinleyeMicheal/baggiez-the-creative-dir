@@ -12,13 +12,6 @@ import {
 import { CustomCursor } from './components/CustomCursor';
 import { GlitchText } from './components/GlitchText';
 import { VideoPlayer } from './components/VideoPlayer';
-import { SplitTextReveal } from './components/SplitTextReveal';
-import { HeroBackground } from './components/HeroBackground';
-import { DistortionImage } from './components/DistortionImage';
-import gsap from 'gsap';
-import { Flip } from 'gsap/Flip';
-
-gsap.registerPlugin(Flip);
 
 const projects = [
     {
@@ -126,7 +119,7 @@ export default function App() {
       e.preventDefault();
       setFormStatus('submitting');
       
-      const endpoint = (import.meta as any).env.VITE_FORMSPREE_ENDPOINT;
+      const endpoint = import.meta.env.VITE_FORMSPREE_ENDPOINT;
       
       if (!endpoint) {
           console.warn("Formspree endpoint not configured. Simulating success.");
@@ -201,27 +194,9 @@ export default function App() {
   };
 
   const openWorkModal = (index: number, fromGrid = false) => {
-    // Capture state before opening modal
-    const flipId = `project-image-${projects[index].id}`;
-    const state = Flip.getState(`[data-flip-id="${flipId}"]`);
-
     setCurrentProjectIndex(index);
     setMainModalView('detail');
     setMainModalOpen(true);
-
-    // Animate after state updates and DOM renders
-    setTimeout(() => {
-      Flip.from(state, {
-        duration: 0.8,
-        ease: "power3.inOut",
-        absolute: true,
-        zIndex: 1000,
-        targets: `[data-flip-id="modal-image"]`,
-        onComplete: () => {
-          // Optional cleanup
-        }
-      });
-    }, 50); // slight delay to ensure the modal block is rendered
   };
 
   const openAllWorksModal = () => {
@@ -353,9 +328,6 @@ export default function App() {
               />
               {/* Dark Gradient Overlay */}
               <div className="absolute inset-0 bg-gradient-to-b from-[#050505]/95 via-[#050505]/80 to-[#050505] transition-opacity duration-1000 group-hover/hero:opacity-70 active:opacity-70"></div>
-              
-              {/* WebGL Particle Background */}
-              <HeroBackground />
           </div>
 
           {/* Content */}
@@ -492,12 +464,15 @@ export default function App() {
                   <span className="text-xs text-[#FF4F00]">(2)</span>
               </div>
               <div className="lg:col-span-10">
-                  <SplitTextReveal 
-                      text="Selected Work." 
-                      as="h2" 
-                      type="words"
+                  <motion.h2 
+                      initial={{ opacity: 0, x: -20 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ duration: 0.8 }}
                       className="text-6xl md:text-8xl font-extralight tracking-tighter text-zinc-100"
-                  />
+                  >
+                      Selected Work<span className="text-[#FF4F00]">.</span>
+                  </motion.h2>
               </div>
           </div>
 
@@ -521,8 +496,8 @@ export default function App() {
                           <span className="text-xs text-zinc-500">{proj.year}</span>
                           <span className="text-xs text-zinc-500 hidden md:block w-32 text-right">{proj.role}</span>
                       </div>
-                      <div data-flip-id={`project-image-${proj.id}`} className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] aspect-[16/9] rounded-lg overflow-hidden opacity-0 scale-95 group-hover:opacity-100 group-hover:scale-100 transition-all duration-500 pointer-events-none z-0 hidden lg:block shadow-2xl">
-                          <DistortionImage imageUrl={proj.cover} className="w-full h-full" />
+                      <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] aspect-[16/9] rounded-lg overflow-hidden opacity-0 scale-95 group-hover:opacity-100 group-hover:scale-100 transition-all duration-500 pointer-events-none z-0 hidden lg:block shadow-2xl">
+                          <img src={proj.cover} alt={proj.title} className="w-full h-full object-cover" />
                       </div>
                   </motion.button>
               ))}
@@ -545,12 +520,15 @@ export default function App() {
                   <span className="text-xs text-[#FF4F00]">(3)</span>
               </div>
               <div className="lg:col-span-10 flex flex-col md:flex-row md:items-end justify-between gap-6">
-                  <SplitTextReveal 
-                      text="Behind The Scenes." 
-                      as="h2" 
-                      type="words"
+                  <motion.h2 
+                      initial={{ opacity: 0, x: -20 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ duration: 0.8 }}
                       className="text-6xl md:text-8xl font-extralight tracking-tighter text-zinc-100"
-                  />
+                  >
+                      Behind The Scenes<span className="text-[#FF4F00]">.</span>
+                  </motion.h2>
               </div>
           </div>
 
@@ -606,12 +584,15 @@ export default function App() {
                   <span className="text-xs text-[#FF4F00]">(4)</span>
               </div>
               <div className="lg:col-span-10">
-                  <SplitTextReveal 
-                      text="Select Clients." 
-                      as="h2" 
-                      type="words"
+                  <motion.h2 
+                      initial={{ opacity: 0, x: -20 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ duration: 0.8 }}
                       className="text-6xl md:text-8xl font-extralight tracking-tighter text-zinc-100"
-                  />
+                  >
+                      Select Clients<span className="text-[#FF4F00]">.</span>
+                  </motion.h2>
               </div>
           </div>
 
@@ -667,12 +648,15 @@ export default function App() {
                   <span className="text-xs text-[#FF4F00]">(5)</span>
               </div>
               <div className="lg:col-span-10">
-                  <SplitTextReveal 
-                      text="Bookings." 
-                      as="h2" 
-                      type="words"
+                  <motion.h2 
+                      initial={{ opacity: 0, x: -20 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ duration: 0.8 }}
                       className="text-6xl md:text-8xl font-extralight tracking-tighter text-zinc-100"
-                  />
+                  >
+                      Bookings<span className="text-[#FF4F00]">.</span>
+                  </motion.h2>
               </div>
           </div>
 
@@ -806,8 +790,8 @@ export default function App() {
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                       {projects.map((proj, idx) => (
                           <div key={proj.id} className="group cursor-pointer" onClick={() => openWorkModal(idx, true)} data-viewable="true">
-                              <div className="aspect-[4/3] rounded-xl overflow-hidden mb-4 relative bg-zinc-900" data-flip-id={`project-image-${proj.id}`}>
-                                  <DistortionImage imageUrl={proj.cover} className="w-full h-full opacity-80 group-hover:opacity-100 transition-opacity duration-500" />
+                              <div className="aspect-[4/3] rounded-xl overflow-hidden mb-4 relative bg-zinc-900">
+                                  <img src={proj.cover} alt={proj.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out opacity-80 group-hover:opacity-100" />
                               </div>
                               <h3 className="text-2xl font-light tracking-tight text-zinc-100 group-hover:text-[#FF4F00] transition-colors duration-300">{proj.title}</h3>
                               <span className="text-xs text-zinc-500 uppercase tracking-widest">{proj.category}</span>
@@ -828,17 +812,15 @@ export default function App() {
                       </div>
                   </div>
 
-                  <div data-flip-id="modal-image" className="w-full aspect-video bg-zinc-900 rounded-xl overflow-hidden relative mb-12 group cursor-pointer" data-playable="true">
+                  <div className="w-full aspect-video bg-zinc-900 rounded-xl overflow-hidden relative mb-12 group cursor-pointer" data-playable="true">
                       {projects[currentProjectIndex]?.videoUrl ? (
-                          <div className="w-full h-full">
-                              <VideoPlayer 
-                                  videoUrl={projects[currentProjectIndex].videoUrl} 
-                                  poster={projects[currentProjectIndex].cover}
-                                  controls={true}
-                                  autoPlay={true}
-                                  muted={false}
-                              />
-                          </div>
+                          <VideoPlayer 
+                              videoUrl={projects[currentProjectIndex].videoUrl} 
+                              poster={projects[currentProjectIndex].cover}
+                              controls={true}
+                              autoPlay={true}
+                              muted={false}
+                          />
                       ) : (
                           <>
                               <img src={projects[currentProjectIndex]?.cover} alt="Project Cover" className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity duration-500" />
