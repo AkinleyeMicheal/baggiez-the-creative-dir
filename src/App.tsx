@@ -279,7 +279,7 @@ export default function App() {
   const clientsDragHandlers = setupDragScroll(clientsRef);
 
   return (
-    <div className="bg-[#050505] text-zinc-300 font-['Inter',sans-serif] antialiased selection:bg-zinc-800 selection:text-zinc-100 overflow-x-hidden min-h-screen">
+    <div className="bg-[#050505] text-zinc-300 font-sans antialiased selection:bg-zinc-800 selection:text-zinc-100 overflow-x-hidden min-h-screen">
       <CustomCursor />
       <div className="film-grain"></div>
       <nav id="main-nav" className={`fixed w-full z-50 px-6 py-4 md:px-12 flex justify-between items-center text-xs transition-all duration-300 ${isScrolled ? 'top-0 backdrop-blur-md bg-[#050505]/90 border-b border-zinc-900 py-4' : 'top-4 md:top-6 mix-blend-difference'}`}>
@@ -387,7 +387,7 @@ export default function App() {
                   {/* To use your own video, replace the videoUrl prop below with your YouTube, Vimeo, or direct .mp4 link */}
                   <div className="w-full h-full opacity-90 group-hover:opacity-100 group-hover:scale-[1.02] transition-all duration-1000 ease-out">
                       <VideoPlayer 
-                          videoUrl="#" 
+                          videoUrl="https://www.youtube.com/watch?v=2Gg6Seob5Mg" 
                           poster="https://images.unsplash.com/photo-1601506521937-0121a7fc2a6b?q=80&w=2071&auto=format&fit=crop"
                       />
                   </div>
@@ -742,8 +742,8 @@ export default function App() {
                   <p className="text-zinc-300 mb-1">Operating out of</p>
                   <p>London — Lagos</p>
               </div>
-              <div className="text-left sm:text-right">
-                  <p>©2025</p>
+              <div className="text-left sm:text-right hidden sm:block">
+                  <p className="opacity-0">Placeholder</p>
               </div>
           </div>
 
@@ -761,10 +761,10 @@ export default function App() {
 
           <div className="w-full max-w-[100rem] mx-auto flex flex-col sm:flex-row justify-between items-center gap-4 text-xs font-medium uppercase tracking-wider">
               <span className="text-zinc-100">Ezekiel Anefiok</span>
-              <a href="#" className="text-zinc-500 hover:text-[#FF4F00] transition-colors duration-300 flex items-center gap-1">
+              <button onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="text-zinc-500 hover:text-[#FF4F00] transition-colors duration-300 flex items-center gap-1 focus:outline-none">
                   Back to top <ArrowUp size={14} />
-              </a>
-              <span className="text-zinc-500">All Rights Reserved</span>
+              </button>
+              <span className="text-zinc-500">&copy; {new Date().getFullYear()} All Rights Reserved</span>
           </div>
       </footer>
 

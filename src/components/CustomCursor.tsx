@@ -10,7 +10,7 @@ export const CustomCursor = () => {
     const cursorY = useMotionValue(-100);
     
     // Smooth spring configuration for the cinematic feel
-    const springConfig = { damping: 20, stiffness: 300, mass: 0.1 };
+    const springConfig = { damping: 25, stiffness: 700, mass: 0.05 };
     const cursorXSpring = useSpring(cursorX, springConfig);
     const cursorYSpring = useSpring(cursorY, springConfig);
 
@@ -90,7 +90,7 @@ export const CustomCursor = () => {
                 animate={{
                     width: isHovering ? (hoverText ? 72 : 56) : 32,
                     height: isHovering ? (hoverText ? 72 : 56) : 32,
-                    backgroundColor: isHovering ? 'rgba(255, 79, 0, 0.03)' : 'transparent',
+                    backgroundColor: isHovering ? 'rgba(255, 79, 0, 0.03)' : 'rgba(255, 79, 0, 0)',
                     borderColor: isHovering ? 'rgba(255, 79, 0, 0.4)' : 'rgba(161, 161, 170, 0.4)',
                 }}
                 transition={{ duration: 0.3, ease: 'easeOut' }}

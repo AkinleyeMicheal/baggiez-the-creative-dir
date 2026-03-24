@@ -50,7 +50,7 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({
             videoId = videoUrl.split('embed/')[1].split('?')[0];
         }
 
-        const embedUrl = `https://www.youtube.com/embed/${videoId}?autoplay=${autoPlay ? 1 : 0}&mute=${muted ? 1 : 0}&loop=${loop ? 1 : 0}&playlist=${videoId}&controls=${controls ? 1 : 0}&showinfo=0&rel=0&modestbranding=1`;
+        const embedUrl = `https://www.youtube.com/embed/${videoId}?autoplay=${autoPlay ? 1 : 0}&mute=${muted ? 1 : 0}&loop=${loop ? 1 : 0}&playlist=${videoId}&controls=${controls ? 1 : 0}&showinfo=0&rel=0&modestbranding=1&playsinline=1`;
 
         return (
             <iframe
