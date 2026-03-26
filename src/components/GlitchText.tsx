@@ -25,9 +25,7 @@ export const GlitchText: React.FC<GlitchTextProps> = ({ text, delay = 0, classNa
                         .split('')
                         .map((letter, index) => {
                             if (letter === ' ') return ' ';
-                            if (index < iteration) {
-                                return text[index];
-                            }
+                            if (index < iteration) return text[index];
                             return CHARS[Math.floor(Math.random() * CHARS.length)];
                         })
                         .join('')
@@ -36,7 +34,7 @@ export const GlitchText: React.FC<GlitchTextProps> = ({ text, delay = 0, classNa
                 if (iteration >= text.length) {
                     cancelAnimationFrame(frame);
                 } else {
-                    iteration += 1 / 4; // Speed of reveal (lower is slower)
+                    iteration += 1 / 1.2; // Was 1/4 — increase this number to go even faster
                     frame = requestAnimationFrame(animate);
                 }
             };
@@ -52,7 +50,7 @@ export const GlitchText: React.FC<GlitchTextProps> = ({ text, delay = 0, classNa
     }, [text, delay]);
 
     return (
-        <span className={`relative inline-block ${className}`}>
+        <span className={`relative inline-block font-clash -tracking-tight font-medium opacity-80 ${className}`}>
             <span className="opacity-0">{text}</span>
             <span className="absolute top-0 left-0 w-full h-full">
                 {started ? displayText : ''}

@@ -13,22 +13,21 @@ interface VideoPlayerProps {
 export const VideoPlayer: React.FC<VideoPlayerProps> = ({
     videoUrl,
     poster,
-    autoPlay = true,
+    autoPlay = false,  // ← was true; never autoplay unless explicitly requested
     loop = true,
     muted = true,
-    controls = false,
+    controls = true,   // ← was false; show controls so user can play manually
     className = "w-full h-full object-cover object-center"
 }) => {
     if (!videoUrl || videoUrl === '#') {
-        // Fallback to poster or empty video if no URL provided
         return (
-            <video 
-                autoPlay={autoPlay} 
-                loop={loop} 
-                muted={muted} 
+            <video
+                autoPlay={autoPlay}
+                loop={loop}
+                muted={muted}
                 controls={controls}
-                playsInline 
-                poster={poster} 
+                playsInline
+                poster={poster}
                 className={className}
             >
                 <source src="#" type="video/mp4" />
@@ -36,11 +35,9 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({
         );
     }
 
-    // Check if it's a YouTube URL
     const isYouTube = videoUrl.includes('youtube.com') || videoUrl.includes('youtu.be');
-    
+
     if (isYouTube) {
-        // Extract video ID
         let videoId = '';
         if (videoUrl.includes('youtu.be/')) {
             videoId = videoUrl.split('youtu.be/')[1].split('?')[0];
@@ -50,49 +47,66 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({
             videoId = videoUrl.split('embed/')[1].split('?')[0];
         }
 
-        const embedUrl = `https://www.youtube.com/embed/${videoId}?autoplay=${autoPlay ? 1 : 0}&mute=${muted ? 1 : 0}&loop=${loop ? 1 : 0}&playlist=${videoId}&controls=${controls ? 1 : 0}&showinfo=0&rel=0&modestbranding=1&playsinline=1`;
+        // autoplay=0 always — user must press play themselves
+        const embedUrl = [
+            `https://www.youtube.com/embed/${videoId}`,
+            `?autoplay=0`,                          // ← hardcoded off, ignoring prop
+            `&mute=${muted ? 1 : 0}`,
+            `&loop=${loop ? 1 : 0}`,
+            `&playlist=${videoId}`,
+            `&controls=${controls ? 1 : 0}`,
+            `&showinfo=0&rel=0&modestbranding=1&playsinline=1`,
+        ].join('');
 
         return (
             <iframe
                 src={embedUrl}
                 title="YouTube video player"
                 frameBorder="0"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                // ↑ "autoplay" removed from allow list so browser policy can't override
                 allowFullScreen
                 className={className}
-                style={{ pointerEvents: controls ? 'auto' : 'none' }} // Prevent iframe from stealing clicks if used as background
-            ></iframe>
+                style={{ pointerEvents: 'auto' }} // always allow interaction
+            />
         );
     }
 
-    // Check if it's a Vimeo URL
     const isVimeo = videoUrl.includes('vimeo.com');
     if (isVimeo) {
         const videoId = videoUrl.split('vimeo.com/')[1].split('?')[0];
-        const embedUrl = `https://player.vimeo.com/video/${videoId}?background=${controls ? 0 : 1}&autoplay=${autoPlay ? 1 : 0}&loop=${loop ? 1 : 0}&byline=0&title=0`;
-        
+        // background=0 so the native Vimeo player UI is shown; autoplay=0
+        const embedUrl = [
+            `https://player.vimeo.com/video/${videoId}`,
+            `?background=0`,
+            `&autoplay=0`,                          // ← hardcoded off
+            `&loop=${loop ? 1 : 0}`,
+            `&byline=0&title=0`,
+        ].join('');
+
         return (
             <iframe
                 src={embedUrl}
                 title="Vimeo video player"
                 frameBorder="0"
-                allow="autoplay; fullscreen; picture-in-picture"
+                allow="fullscreen; picture-in-picture"
+                // ↑ "autoplay" removed from allow list
                 allowFullScreen
                 className={className}
-                style={{ pointerEvents: controls ? 'auto' : 'none' }}
-            ></iframe>
+                style={{ pointerEvents: 'auto' }}
+            />
         );
     }
 
-    // Default to HTML5 video for direct links (.mp4, .webm, etc)
+    // Native HTML5 video
     return (
-        <video 
-            autoPlay={autoPlay} 
-            loop={loop} 
-            muted={muted} 
+        <video
+            autoPlay={autoPlay}
+            loop={loop}
+            muted={muted}
             controls={controls}
-            playsInline 
-            poster={poster} 
+            playsInline
+            poster={poster}
             className={className}
         >
             <source src={videoUrl} type="video/mp4" />
